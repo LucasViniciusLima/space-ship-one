@@ -4,21 +4,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>SkyLazer Space Ship</title>
   <script src="canvas.methods.js" type="module"></script>
   <script src="index.js" type="module"></script>
   <style>
+    body {
+      background-color: #111;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      margin-top: 10px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .mainCanvas {
       border-style: solid;
       border-width: 1px;
       border-color: gray;
       background-color: black;
     }
+
+    .title {
+      text-align: center;
+      color: #FF11FF;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+    }
   </style>
 </head>
 
 <body>
-  <canvas class="mainCanvas" id="canvas" width="900" height="600"></canvas>
+  <div class="container">
+    <h1 class="title">SKYLAZER SPACE SHIP</h1>
+    <canvas class="mainCanvas" id="canvas" width="900" height="600"></canvas>
+  </div>
 </body>
 
 </html>

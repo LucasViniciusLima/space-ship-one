@@ -11,6 +11,7 @@ export class CanvasMethods {
   }
 
   drawTriangle(player) {
+    this.setColorInCtx(player.color);
     this.ctx.beginPath();
 
     this.ctx.moveTo(player.x, player.y);
@@ -32,6 +33,7 @@ export class CanvasMethods {
 
   drawShots(shot) {
     if (shot.active) {
+      this.setColorInCtx(shot.color);
       this.drawRectangle(shot);
     }
   }
