@@ -2,14 +2,16 @@
 export class Player {
   x = 435;
   y = 500;
-  width = 25;
-  height = 30;
-  velocityX = 4;
+  width = 40;
+  height = 50;
+  velocityX = 7;
   velocityY = 3;
   isMoving = false;
   xDirection = 0;
   yDirection = 0;
   color = '#FF11FF';
+  life = 3;
+  alive = true;
 
   move() {
     this.x += this.velocityX * this.xDirection;
@@ -70,6 +72,15 @@ export class Player {
     }
   }
 
+  increaseHealthPoint() {
+    this.life += 1;
+  }
 
+  hittedByEnemy() {
+    this.life -= 1;
+    if (this.life <= 0) {
+      this.alive = false;
+    }
+  }
 
 }
