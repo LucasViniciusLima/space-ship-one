@@ -85,4 +85,17 @@ export class CanvasMethods {
     this.ctx.drawImage(heartImage, x, 20, 23, 23);
   }
 
+  drawParticle(particle) {
+    if (particle.timeOnScreen >= particle.totalTimeOnScreen) {
+      return;
+    }
+
+    const part = particle.totalTimeOnScreen / particle.frames;
+    console.log(particle.timeOnScreen / part);
+    const imageNum = Math.ceil(particle.timeOnScreen / part);
+    const particleImage = document.getElementById(particle.id + imageNum);
+    console.log(imageNum)
+    this.ctx.drawImage(particleImage, particle.x, particle.y, particle.width, particle.height);
+  }
+
 }

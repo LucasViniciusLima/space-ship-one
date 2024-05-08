@@ -1,4 +1,5 @@
 import { CanvasMethods } from "./canvas.methods.js";
+import { Effect } from "./models/effect.model.js";
 import { Enemy } from "./models/enemy.model.js";
 import { Player } from "./models/player.model.js";
 import { Shot } from "./models/shot.model.js";
@@ -7,6 +8,7 @@ let player = new Player();
 let shots = [];
 let enemysShoots = [];
 let enemys = [new Enemy(200, 100)];
+let particles = [];
 
 let cvMethod;
 
@@ -32,6 +34,11 @@ function updateFrame() {
     if (lenemy.alive) {
       cvMethod.drawEnemy(lenemy);
     }
+  });
+
+  particles.forEach(particle => {
+    particle.timeOnScreen += 16;
+    cvMethod.drawParticle(particle);
   });
 
   window.requestAnimationFrame(updateFrame);
@@ -70,8 +77,9 @@ function handlePlayerShoots() {
       shots[i].move();
 
       enemys.forEach(lenemy => {
-        if (isShotHitingEnemy(shots[i], lenemy)) {
+        if (isShotHitingEnemy(shots[i], lenemy) && lenemy.alive) {
           lenemy.alive = false;
+          createExplosionEffect(shots[i].x, shots[i].y);
         }
       });
     }
@@ -87,6 +95,7 @@ function handleEnemysShoots() {
         if (enemysShoots[i].active) {
           player.hittedByEnemy();
           enemysShoots[i].active = false;
+          createExplosionEffect(enemysShoots[i].x, enemysShoots[i].y);
         }
       }
     }
@@ -100,14 +109,16 @@ function handleEnemysMovement() {
 
       if (hittedOne) {
         enemys[i].moveInverseDirectionOf(hittedOne);
+        createExplosionEffect(hittedOne.x, hittedOne.y);
       } else {
-        enemys[i].move(player.x, player.y);
+        enemys[i].move(enemys[i].x, enemys[i].y);
         enemyShooting(enemys[i]);
       }
 
-      if (enemys[i].isInRangeOf(player.x, player.y)) {
+      if (enemys[i].isInRangeOf(player.x, player.y) && player.alive) {
         enemys[i].moveInverseDirectionOf(null);
         player.hittedByEnemy();
+        createExplosionEffect(enemys[i].x, enemys[i].y);
       }
     }
   }
@@ -154,6 +165,12 @@ function isEnemyShootHitingPlayer(shot) {
   return (shot.y > enemyHitboxYStart && shot.y < enemyHitboxYEnd) && (shot.x > enemyHitboxXStart && shot.x < enemyHitboxXEnd);
 }
 
+function createExplosionEffect(x, y) {
+  const particle = new Effect(x - 15, y - 15, 50, 50);
+  particle.id = "explosion-";
+  particle.frames = 3;
+  particles.push(particle);
+}
 
 //teste buttons
 document.getElementById("btn-add-enemy").addEventListener("click", function includeEnemy() {
