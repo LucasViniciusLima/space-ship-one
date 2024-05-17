@@ -64,7 +64,7 @@ export class CanvasMethods {
   }
 
   showPlayerLife(player) {
-    if (player.alive) {
+    if (player.active) {
       for (let i = 0; i < player.life; i++) {
         this.drawCircleLifeAtX(850 - i * 23, player);
       }
@@ -87,14 +87,13 @@ export class CanvasMethods {
 
   drawParticle(particle) {
     if (particle.timeOnScreen >= particle.totalTimeOnScreen) {
+      particle.active = false;
       return;
     }
 
     const part = particle.totalTimeOnScreen / particle.frames;
-    console.log(particle.timeOnScreen / part);
     const imageNum = Math.ceil(particle.timeOnScreen / part);
     const particleImage = document.getElementById(particle.id + imageNum);
-    console.log(imageNum)
     this.ctx.drawImage(particleImage, particle.x, particle.y, particle.width, particle.height);
   }
 

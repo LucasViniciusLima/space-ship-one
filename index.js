@@ -17,6 +17,8 @@ const clock = setInterval(function () {
   handlePlayerShoots();
   handleEnemysShoots();
   handleEnemysMovement();
+
+  clearInactiveItems();
 }, 30);
 
 function updateFrame() {
@@ -26,12 +28,12 @@ function updateFrame() {
   shots.forEach(shot => cvMethod.drawShots(shot));
   enemysShoots.forEach(shot => cvMethod.drawShots(shot));
 
-  if (player.alive) {
+  if (player.active) {
     cvMethod.drawPlayer(player);
   }
 
   enemys.forEach(lenemy => {
-    if (lenemy.alive) {
+    if (lenemy.active) {
       cvMethod.drawEnemy(lenemy);
     }
   });
@@ -77,8 +79,8 @@ function handlePlayerShoots() {
       shots[i].move();
 
       enemys.forEach(lenemy => {
-        if (isShotHitingEnemy(shots[i], lenemy) && lenemy.alive) {
-          lenemy.alive = false;
+        if (isShotHitingEnemy(shots[i], lenemy) && lenemy.active) {
+          lenemy.active = false;
           createExplosionEffect(shots[i].x, shots[i].y);
         }
       });
@@ -104,8 +106,8 @@ function handleEnemysShoots() {
 
 function handleEnemysMovement() {
   for (let i = 0; i < enemys.length; i++) {
-    if (enemys[i].alive) {
-      const hittedOne = enemys.find(enemy => enemy.alive && enemy.isInRangeOf(enemys[i].x, enemys[i].y));
+    if (enemys[i].active) {
+      const hittedOne = enemys.find(enemy => enemy.active && enemy.isInRangeOf(enemys[i].x, enemys[i].y));
 
       if (hittedOne) {
         enemys[i].moveInverseDirectionOf(hittedOne);
@@ -115,7 +117,7 @@ function handleEnemysMovement() {
         enemyShooting(enemys[i]);
       }
 
-      if (enemys[i].isInRangeOf(player.x, player.y) && player.alive) {
+      if (enemys[i].isInRangeOf(player.x, player.y) && player.active) {
         enemys[i].moveInverseDirectionOf(null);
         player.hittedByEnemy();
         createExplosionEffect(enemys[i].x, enemys[i].y);
@@ -125,7 +127,7 @@ function handleEnemysMovement() {
 }
 
 function startShoting() {
-  if (player.alive) {
+  if (player.active) {
     let newShot = new Shot(player.x - 5, player.y, -1);
     shots.push(newShot);
   }
@@ -170,6 +172,21 @@ function createExplosionEffect(x, y) {
   particle.id = "explosion-";
   particle.frames = 3;
   particles.push(particle);
+}
+
+function removeUnusedItems(arr) {
+  arr.forEach(function (item, index, object) {
+    if (!item.active) {
+      object.splice(index, 1);
+    }
+  });
+}
+
+function clearInactiveItems() {
+  removeUnusedItems(shots);
+  removeUnusedItems(particles);
+  removeUnusedItems(enemys);
+  removeUnusedItems(enemysShoots);
 }
 
 //teste buttons

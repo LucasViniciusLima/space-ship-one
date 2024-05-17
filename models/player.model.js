@@ -11,7 +11,7 @@ export class Player {
   yDirection = 0;
   color = '#FF11FF';
   life = 3;
-  alive = true;
+  active = true;
 
   move() {
     this.x += this.velocityX * this.xDirection;
@@ -79,7 +79,7 @@ export class Player {
   hittedByEnemy() {
     this.life -= 1;
     if (this.life <= 0) {
-      this.alive = false;
+      this.active = false;
     }
   }
 

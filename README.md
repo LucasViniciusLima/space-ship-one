@@ -18,12 +18,12 @@ This is a game about spaceship who are like snooker but with shoot
 [x] - images of player
 [x] - images of enemys
 [x] - draw explosion when hits
+[x] - clear the array of shoots and enemy shoots and enemys
 
 ### TODO
-[ ] - clear the array of shoots and enemy shoots and enemys
+[ ] - game over
+[ ] - reestart game
+[ ] - enemy ivulnerability when hitted
 [ ] - phases
 [ ] - screver a cada tiro s.k.y.l.a.z.e.r ao final soltar um poder
-[ ] - reestart game
-[ ] - game over
-[ ] - enemy ivulnerability when hitted
 [ ] - background movement infinty

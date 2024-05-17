@@ -7,6 +7,7 @@ export class Effect {
   totalTimeOnScreen = 180;
   frames;
   id;
+  active = true;
 
   constructor(x, y, width, height) {
     this.x = x;

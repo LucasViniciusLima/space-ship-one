@@ -8,7 +8,7 @@ export class Enemy {
   velocityY = 2;
   xDirection = 1;
   yDirection = 1;
-  alive = true;
+  active = true;
   color = '#FF8800';
   lastShot;
 
