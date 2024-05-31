@@ -2,8 +2,8 @@
 export class Player {
   x = 435;
   y = 500;
-  width = 40;
-  height = 50;
+  width = 84.7;
+  height = 60;
   velocityX = 7;
   velocityY = 3;
   isMoving = false;
@@ -14,6 +14,8 @@ export class Player {
   active = true;
 
   move() {
+    if (!this.active) return;
+
     this.x += this.velocityX * this.xDirection;
     this.y += this.velocityY * this.yDirection;
   }

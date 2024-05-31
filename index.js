@@ -24,6 +24,7 @@ const clock = setInterval(function () {
 function updateFrame() {
   cvMethod.clearRect();
   cvMethod.showPlayerLife(player);
+  cvMethod.showPlayerScreenStatus(player);
 
   shots.forEach(shot => cvMethod.drawShots(shot));
   enemysShoots.forEach(shot => cvMethod.drawShots(shot));
@@ -61,10 +62,7 @@ document.addEventListener("keyup", function (key) {
     }
     return;
   }
-
-  if (player.isMotionKey(key)) {
-    player.clearPlayerMovement(key);
-  }
+  player.clearPlayerMovement(key);
 });
 
 document.addEventListener("keydown", function (key) {

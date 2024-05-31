@@ -2,8 +2,8 @@ export class Enemy {
 
   x = 435;
   y = 100;
-  width = 40;
-  height = 40;
+  width = 54;
+  height = 45;
   velocityX = 4;
   velocityY = 2;
   xDirection = 1;

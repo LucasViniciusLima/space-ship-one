@@ -3,6 +3,7 @@ export class CanvasMethods {
 
   constructor(context) {
     this.ctx = context;
+    this.ctx.imageSmoothingEnabled = false;
   }
 
 
@@ -24,7 +25,7 @@ export class CanvasMethods {
   }
 
   drawPlayer(player) {
-    const playerImage = document.getElementById("spaceship");
+    const playerImage = this.getPlayerImageAleator();
     const playerXStarts = player.x - (player.width / 2);
     this.ctx.drawImage(playerImage, playerXStarts, player.y, player.width, player.height);
   }
@@ -56,11 +57,18 @@ export class CanvasMethods {
     this.ctx.drawImage(shootImage, shot.x, shot.y, shot.width, shot.height);
   }
 
+  getPlayerImageAleator() {
+    let num = this.generateAleatoreNumber(1, 3);
+    return document.getElementById("spaceship-" + num);
+  }
+
   getShotImageAleatore() {
-    let min = 1;
-    let max = 3;
-    const num = Math.floor(Math.random() * (max - min + 1)) + min;
+    let num = this.generateAleatoreNumber(1, 3);
     return document.getElementById("shoot-" + num);
+  }
+
+  generateAleatoreNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   showPlayerLife(player) {
@@ -68,6 +76,12 @@ export class CanvasMethods {
       for (let i = 0; i < player.life; i++) {
         this.drawCircleLifeAtX(850 - i * 23, player);
       }
+    }
+  }
+
+  showPlayerScreenStatus(player) {
+    if (!player.active) {
+      this.showDeadScreen();
     }
   }
 
@@ -95,6 +109,15 @@ export class CanvasMethods {
     const imageNum = Math.ceil(particle.timeOnScreen / part);
     const particleImage = document.getElementById(particle.id + imageNum);
     this.ctx.drawImage(particleImage, particle.x, particle.y, particle.width, particle.height);
+  }
+
+  showDeadScreen() {
+    this.setColorInCtx("#ff33ff");
+    this.ctx.font = "bold 50px Cambria";
+    this.ctx.fillText("YOU ARE DEAD!", 285, 300);
+
+    this.ctx.font = "bold 20px Cambria";
+    this.ctx.fillText("Clique na tela para continuar", 335, 330);
   }
 
 }
