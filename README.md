@@ -21,11 +21,14 @@ This is a game about spaceship who are like snooker but with shoot
 [x] - clear the array of shoots and enemy shoots and enemys
 [x] - dimensionar o tamanho correto do player
 [x] - game over
+[x] - reestart game
+[x] - enemy ivulnerability when hitted
+[x] - enemy bug remove
+[x] - background movement infinty
 
 ### TODO
-[ ] - reestart game
-[ ] - enemy ivulnerability when hitted
-[ ] - enemy bug removez
+
+[ ] - screver a cada morte de inimigo s.k.y.l.a.z.e.r ao final soltar um poder
+
 [ ] - phases
-[ ] - screver a cada tiro s.k.y.l.a.z.e.r ao final soltar um poder
-[ ] - background movement infinty
+[ ] - add status on death scene [space killed time, shots given etc]

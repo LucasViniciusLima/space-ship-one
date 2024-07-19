@@ -11,18 +11,23 @@ let enemys = [new Enemy(200, 100)];
 let particles = [];
 
 let cvMethod;
+let clockCounter = 0;
+let nextEnemyGeneration = 100;
 
 const clock = setInterval(function () {
+  clockCounter++;
   player.move();
   handlePlayerShoots();
   handleEnemysShoots();
   handleEnemysMovement();
+  handleEnemysGeneration();
 
   clearInactiveItems();
 }, 30);
 
 function updateFrame() {
   cvMethod.clearRect();
+  cvMethod.createBackground(clockCounter);
   cvMethod.showPlayerLife(player);
   cvMethod.showPlayerScreenStatus(player);
 
@@ -30,12 +35,20 @@ function updateFrame() {
   enemysShoots.forEach(shot => cvMethod.drawShots(shot));
 
   if (player.active) {
-    cvMethod.drawPlayer(player);
+    if (player.isIntangibleToEnemies()) {
+      cvMethod.drawPlayerIntangible(player);
+    } else {
+      cvMethod.drawPlayer(player);
+    }
   }
 
   enemys.forEach(lenemy => {
     if (lenemy.active) {
-      cvMethod.drawEnemy(lenemy);
+      if (lenemy.isIntangibleToEnemies()) {
+        cvMethod.drawEnemyIntangible(lenemy);
+      } else {
+        cvMethod.drawEnemy(lenemy);
+      }
     }
   });
 
@@ -80,9 +93,22 @@ function handlePlayerShoots() {
         if (isShotHitingEnemy(shots[i], lenemy) && lenemy.active) {
           lenemy.active = false;
           createExplosionEffect(shots[i].x, shots[i].y);
+          player.decreaseSpecialShotCountingRemaining();
         }
       });
     }
+  }
+}
+
+function handleEnemysGeneration() {
+  nextEnemyGeneration--;
+  if (nextEnemyGeneration <= 0) {
+    let x = generateAleatoreNumber(1, 2) === 1 ? 20 : 880;
+    let y = generateAleatoreNumber(20, 300);
+    let newEnemy = new Enemy(x, y);
+    newEnemy.yDirection = -1;
+    enemys.push(newEnemy);
+    nextEnemyGeneration = 200;
   }
 }
 
@@ -92,7 +118,7 @@ function handleEnemysShoots() {
       enemysShoots[i].move();
       if (isEnemyShootHitingPlayer(enemysShoots[i])) {
 
-        if (enemysShoots[i].active) {
+        if (enemysShoots[i].active && !player.isIntangibleToEnemies()) {
           player.hittedByEnemy();
           enemysShoots[i].active = false;
           createExplosionEffect(enemysShoots[i].x, enemysShoots[i].y);
@@ -105,18 +131,19 @@ function handleEnemysShoots() {
 function handleEnemysMovement() {
   for (let i = 0; i < enemys.length; i++) {
     if (enemys[i].active) {
+      enemys[i].decreaseIntangibilityToEnemys();
       const hittedOne = enemys.find(enemy => enemy.active && enemy.isInRangeOf(enemys[i].x, enemys[i].y));
 
-      if (hittedOne) {
+      if (hittedOne && !enemys[i].isIntangibleToEnemies()) {
         enemys[i].moveInverseDirectionOf(hittedOne);
+        enemys[i].setIntangibleToEnemies(16);
         createExplosionEffect(hittedOne.x, hittedOne.y);
       } else {
         enemys[i].move(enemys[i].x, enemys[i].y);
         enemyShooting(enemys[i]);
       }
 
-      if (enemys[i].isInRangeOf(player.x, player.y) && player.active) {
-        enemys[i].moveInverseDirectionOf(null);
+      if (enemys[i].isInRangeOf(player.x, player.y) && player.active && !player.isIntangibleToEnemies()) {
         player.hittedByEnemy();
         createExplosionEffect(enemys[i].x, enemys[i].y);
       }
@@ -133,7 +160,7 @@ function startShoting() {
 
 function enemyShooting(enemy) {
   if (enemy.isAbleToShoot(player.x, player.y)) {
-    if (enemy.hasMinimunDistanceFromLastShot(enemy.x, enemy.y)) {
+    if (enemy.hasMinimunDistanceFromLastShot(enemy.x, enemy.y) && player.active) {
       let shoot = new Shot(enemy.x, enemy.y, 1);
       shoot.color = enemy.color;
       enemysShoots.push(shoot);
@@ -193,3 +220,23 @@ document.getElementById("btn-add-enemy").addEventListener("click", function incl
 });
 
 //renascer / reeestart
+document.getElementById("canvas").addEventListener("click", function mouseEvent(event) {
+  const { pageX, pageY } = event;
+  if (!player.active) {
+    resetGameStatus();
+  }
+});
+
+function resetGameStatus() {
+  player = new Player();
+  shots = [];
+  enemysShoots = [];
+  enemys = [new Enemy(200, 100)];
+  particles = [];
+  clockCounter = 0;
+  nextEnemyGeneration = 100;
+}
+
+function generateAleatoreNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

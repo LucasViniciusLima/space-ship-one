@@ -12,9 +12,15 @@ export class Player {
   color = '#FF11FF';
   life = 3;
   active = true;
+  intangibilityToEnemys = 0;
+  specialShotCountingRemaining = 6;
+  hasSpecialShot = false;
+
 
   move() {
     if (!this.active) return;
+
+    this.decreaseIntangibilityToEnemys();
 
     this.x += this.velocityX * this.xDirection;
     this.y += this.velocityY * this.yDirection;
@@ -79,10 +85,41 @@ export class Player {
   }
 
   hittedByEnemy() {
+
     this.life -= 1;
+    this.setIntangibleToEnemies(36);
+    this.clearSpecialShotCountingRemaining();
+
     if (this.life <= 0) {
       this.active = false;
     }
+  }
+
+  setIntangibleToEnemies(seconds) {
+    this.intangibilityToEnemys = seconds;
+  }
+
+  isIntangibleToEnemies() {
+    return this.intangibilityToEnemys > 0;
+  }
+
+  decreaseIntangibilityToEnemys() {
+    if (this.intangibilityToEnemys > 0) {
+      this.intangibilityToEnemys -= 1;
+    }
+  }
+
+  clearSpecialShotCountingRemaining() {
+    this.specialShotCountingRemaining = 6;
+  }
+
+  decreaseSpecialShotCountingRemaining() {
+    if (this.specialShotCountingRemaining <= 0) {
+      this.hasSpecialShot = true;
+      return;
+    }
+
+    this.specialShotCountingRemaining--;
   }
 
 }

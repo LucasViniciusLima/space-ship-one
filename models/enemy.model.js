@@ -11,6 +11,7 @@ export class Enemy {
   active = true;
   color = '#FF8800';
   lastShot;
+  intangibilityToEnemys = 0;
 
   constructor(x, y) {
     this.x = x;
@@ -30,26 +31,40 @@ export class Enemy {
       this.yDirection *= -1;
       this.realocateIfIsOnScreenLimitY();
     }
+  }
 
-    if (!this.isOnScreenLimitX() && !this.isOnScreenLimitY()) {
-      this.manipulateYDirection(playerYLocation);
-      this.manipulateXDirection(playerXLocation);
+  setIntangibleToEnemies(seconds) {
+    this.intangibilityToEnemys = seconds;
+  }
+
+  isIntangibleToEnemies() {
+    return this.intangibilityToEnemys > 0;
+  }
+
+  decreaseIntangibilityToEnemys() {
+    if (this.intangibilityToEnemys > 0) {
+      this.intangibilityToEnemys -= 1;
     }
   }
 
   moveInverseDirectionOf(hittedOne) {
-    this.xDirection *= -1;
-    this.yDirection *= -1;
+    if (hittedOne.xDirection == this.xDirection) {
+      this.yDirection = -1 * hittedOne.yDirection;
+    } else {
+      this.yDirection *= -1;
+      hittedOne.yDirection *= -1;
+    }
 
-    this.x += (this.velocityX + 3) * this.xDirection;
-    this.y += (this.velocityY + 3) * this.yDirection;
+
+    if (hittedOne.yDirection == this.yDirection) {
+      this.xDirection = -1 * hittedOne.xDirection;
+    } else {
+      this.xDirection *= -1;
+      hittedOne.xDirection *= -1;
+    }
 
     this.realocateIfIsOnScreenLimitX();
     this.realocateIfIsOnScreenLimitY();
-
-    if (hittedOne) {
-      hittedOne.moveInverseDirectionOf(null);
-    }
   }
 
   realocateIfIsOnScreenLimitX() {
@@ -57,8 +72,10 @@ export class Enemy {
       const startWidth = this.x - (this.width / 2);
       if (startWidth <= 0) {
         this.x = (this.width / 2);
+        this.xDirection = 1;
       } else {
         this.x = canvas.width - (this.width / 2);
+        this.xDirection = -1;
       }
     }
   }
@@ -67,39 +84,10 @@ export class Enemy {
     if (this.isOnScreenLimitY()) {
       if (this.y <= 1) {
         this.y = 1.1;
+        this.yDirection = 1;
       } else {
         this.y = canvas.height - this.height;
-      }
-    }
-  }
-
-  manipulateYDirection(playerYLocation) {
-    if (this.isUpOfPlayer(playerYLocation)) {
-      if (this.x <= this.width) {
-        this.yDirection = 1;
-      }
-    }
-
-    if (this.isDownPlayer(playerYLocation)) {
-      if ((this.x + this.width) >= (canvas.width - this.width)) {
         this.yDirection = -1;
-      }
-    }
-  }
-
-  manipulateXDirection(playerXLocation) {
-    const isLeftPlayer = this.x < playerXLocation;
-    const isRightPlayer = !isLeftPlayer;
-
-    if (isLeftPlayer) {
-      if (this.y <= this.height) {
-        this.xDirection = 1;
-      }
-    }
-
-    if (isRightPlayer) {
-      if (this.y + this.height >= canvas.height - this.height) {
-        this.xDirection = -1;
       }
     }
   }
@@ -144,6 +132,14 @@ export class Enemy {
 
   isDownPlayer(playerYLocation) {
     return this.y > playerYLocation;
+  }
+
+  isLeftPlayer(playerXLocation) {
+    return this.x < playerXLocation;
+  }
+
+  isRightPlayer(playerXLocation) {
+    return this.x > playerXLocation;
   }
 
   endShooting() {

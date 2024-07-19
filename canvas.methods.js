@@ -6,6 +6,24 @@ export class CanvasMethods {
     this.ctx.imageSmoothingEnabled = false;
   }
 
+  createBackground(clockCounter) {
+    if (clockCounter % 2 == 1) {
+      return;
+    }
+    for (let i = 0; i < 7; i++) {
+      const x = this.generateAleatoreNumber(0, 900);
+      const y = this.generateAleatoreNumber(0, 600);
+      this.drawCircleStarAt(x, y);
+    }
+  }
+
+  drawCircleStarAt(x, y) {
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, 3, 0, 2 * Math.PI);
+    this.ctx.fillStyle = "#FFFFFF";
+    this.ctx.fill();
+    this.ctx.stroke();
+  }
 
   drawRectangle(player) {
     this.ctx.fillRect(player.x, player.y, player.width, player.height);
@@ -18,7 +36,6 @@ export class CanvasMethods {
     this.ctx.moveTo(player.x, player.y);
     this.ctx.lineTo(player.x - (player.width / 2), player.y + player.height);
     this.ctx.lineTo(player.x + (player.width / 2), player.y + player.height);
-
 
     this.ctx.closePath();
     this.ctx.fill();
@@ -34,6 +51,18 @@ export class CanvasMethods {
     const enemyImage = document.getElementById("spaceship-enemy");
     const enemyXStarts = enemy.x - (enemy.width / 2);
     this.ctx.drawImage(enemyImage, enemyXStarts, enemy.y, enemy.width, enemy.height);
+  }
+
+  drawPlayerIntangible(player) {
+    this.ctx.globalAlpha = 0.5;
+    this.drawPlayer(player);
+    this.ctx.globalAlpha = 1;
+  }
+
+  drawEnemyIntangible(enemy) {
+    this.ctx.globalAlpha = 0.5;
+    this.drawEnemy(enemy);
+    this.ctx.globalAlpha = 1;
   }
 
   setColorInCtx(str) {
