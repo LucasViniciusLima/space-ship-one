@@ -25,9 +25,9 @@ This is a game about spaceship who are like snooker but with shoot
 [x] - enemy ivulnerability when hitted
 [x] - enemy bug remove
 [x] - background movement infinty
+[x] - button click to start
 
 ### TODO
-
 [ ] - screver a cada morte de inimigo s.k.y.l.a.z.e.r ao final soltar um poder
 
 [ ] - phases

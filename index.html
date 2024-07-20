@@ -7,9 +7,12 @@
   <title>SkyLazer Space Ship</title>
   <script src="canvas.methods.js" type="module"></script>
   <script src="index.js" type="module"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #111;
+      background-color: #030303;
       display: flex;
       justify-content: center;
     }
@@ -21,31 +24,50 @@
     }
 
     .mainCanvas {
-      border-style: solid;
-      border-width: 1px;
-      border-color: gray;
+      margin-top: 50px;
       background-color: black;
     }
 
     .title {
       text-align: center;
       color: #FF11FF;
-      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-
+      font-family: "Orbitron", sans-serif;
+      font-optical-sizing: auto;
     }
 
     .img-resources {
       display: none;
       visibility: hidden;
     }
+
+    .div-buttons {
+      padding: 10px;
+    }
+
+    .test-button {
+      background-color: #FF11FF;
+      color: #ffffff;
+      border: 0;
+      border-radius: 5px;
+      text-transform: uppercase;
+      padding: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .test-button:hover {
+      background-color: #a71ba7;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1 class="title">SKYLAZER SPACE SHIP</h1>
+    <!--h1 class="title">SKYLAZER SPACE SHIP</h1-->
     <canvas class="mainCanvas" id="canvas" width="900" height="600"></canvas>
-    <button id="btn-add-enemy">Add Enemy</button>
+    <div class="div-buttons">
+      <button class="test-button" id="btn-add-enemy">Add Enemy</button>
+    </div>
   </div>
   <img class="img-resources" src="./resources/heartgame.png" id="heart">
   <img class="img-resources" src="./resources/main-spaceship0.png" id="spaceship-1">
@@ -58,6 +80,16 @@
   <img class="img-resources" src="./resources/explosion-1.png" id="explosion-1">
   <img class="img-resources" src="./resources/explosion-2.png" id="explosion-2">
   <img class="img-resources" src="./resources/explosion-3.png" id="explosion-3">
+  <img class="img-resources" src="./resources/charge-panel-0.png" id="charge-panel-0">
+  <img class="img-resources" src="./resources/charge-panel-1.png" id="charge-panel-1">
+  <img class="img-resources" src="./resources/charge-panel-2.png" id="charge-panel-2">
+  <img class="img-resources" src="./resources/charge-panel-3.png" id="charge-panel-3">
+  <img class="img-resources" src="./resources/charge-panel-4.png" id="charge-panel-4">
+  <img class="img-resources" src="./resources/charge-panel-particles-0.png" id="charge-panel-particles-0">
+  <img class="img-resources" src="./resources/charge-panel-particles-1.png" id="charge-panel-particles-1">
+  <img class="img-resources" src="./resources/charge-panel-particles-2.png" id="charge-panel-particles-2">
+  <img class="img-resources" src="./resources/charge-panel-particles-3.png" id="charge-panel-particles-3">
+  <img class="img-resources" src="./resources/charge-panel-particles-4.png" id="charge-panel-particles-4">
 </body>
 
 </html>

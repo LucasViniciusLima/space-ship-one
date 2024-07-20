@@ -13,9 +13,9 @@ export class Player {
   life = 3;
   active = true;
   intangibilityToEnemys = 0;
-  specialShotCountingRemaining = 6;
+  specialShotCountingRemaining = 4;
   hasSpecialShot = false;
-
+  deaths = 0;
 
   move() {
     if (!this.active) return;
@@ -92,6 +92,7 @@ export class Player {
 
     if (this.life <= 0) {
       this.active = false;
+      this.deaths++;
     }
   }
 
@@ -110,16 +111,16 @@ export class Player {
   }
 
   clearSpecialShotCountingRemaining() {
-    this.specialShotCountingRemaining = 6;
+    this.specialShotCountingRemaining = 4;
   }
 
   decreaseSpecialShotCountingRemaining() {
+    this.specialShotCountingRemaining--;
+
     if (this.specialShotCountingRemaining <= 0) {
       this.hasSpecialShot = true;
       return;
     }
-
-    this.specialShotCountingRemaining--;
   }
 
 }

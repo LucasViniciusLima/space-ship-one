@@ -1,5 +1,7 @@
 export class CanvasMethods {
   ctx;
+  lastChargePanelParticleUpdate;
+  lastChargePanelImage = 0;
 
   constructor(context) {
     this.ctx = context;
@@ -96,6 +98,26 @@ export class CanvasMethods {
     return document.getElementById("shoot-" + num);
   }
 
+  getHorizontalPowerImageAleatore() {
+    if (!this.lastChargePanelParticleUpdate) {
+      this.lastChargePanelParticleUpdate = new Date();
+    }
+
+    const actualFrame = new Date();
+    let diference = actualFrame.getMilliseconds() - this.lastChargePanelParticleUpdate.getMilliseconds();
+
+    if ((diference > 500 && diference < 535) || (diference > 200 && diference < 235) || (diference > 140 && diference < 160) || (diference < -640 && diference > -660) || (diference < -340 && diference > -360) || (diference < -840 && diference > -860)) {
+      this.lastChargePanelImage++;
+
+      if (this.lastChargePanelImage > 4) {
+        this.lastChargePanelImage = 0;
+      }
+
+    }
+
+    return document.getElementById("charge-panel-particles-" + this.lastChargePanelImage);
+  }
+
   generateAleatoreNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -109,8 +131,12 @@ export class CanvasMethods {
   }
 
   showPlayerScreenStatus(player) {
-    if (!player.active) {
+    if (!player.active && player.deaths > 0) {
       this.showDeadScreen();
+      return;
+    }
+    if (!player.active && player.deaths == 0) {
+      this.showInitialScreen();
     }
   }
 
@@ -142,11 +168,47 @@ export class CanvasMethods {
 
   showDeadScreen() {
     this.setColorInCtx("#ff33ff");
-    this.ctx.font = "bold 50px Cambria";
+    this.ctx.font = "bold 40px Orbitron";
     this.ctx.fillText("YOU ARE DEAD!", 285, 300);
 
-    this.ctx.font = "bold 20px Cambria";
-    this.ctx.fillText("Clique na tela para continuar", 335, 330);
+    this.ctx.font = "bold 20px Orbitron";
+    this.ctx.fillText("Clique na tela para continuar", 305, 330);
+  }
+
+  showInitialScreen() {
+    this.setColorInCtx("#ff33ff");
+    this.ctx.font = "bold 50px Orbitron";
+    this.ctx.fillText("SKYLAZER SPACESHIP", 120, 200);
+
+    this.ctx.font = "bold 20px Orbitron";
+    this.ctx.fillText("Clique na tela para iniciar", 330, 260);
+  }
+  showButtonIndicatorToSpecialShot() {
+    this.setColorInCtx("#ff33ff");
+    this.ctx.font = "bold 13px Orbitron";
+    this.ctx.fillText("PRESSIONE \"S\"", 54, 590);
+  }
+
+  showPlayerSpecialCharge(player) {
+    if (player.active) {
+      const chargeImage = this.selectChargeImageByPlayerChargesRemaining(player);
+      this.ctx.drawImage(chargeImage, 30, 545, 154, 24);
+
+      if (player.hasSpecialShot) {
+        const shootImage = this.getHorizontalPowerImageAleatore();
+        this.ctx.drawImage(shootImage, 20, 535, 177, 40);
+        this.showButtonIndicatorToSpecialShot();
+      }
+    }
+  }
+
+  selectChargeImageByPlayerChargesRemaining(player) {
+    let imgIdToSelect = 4 - player.specialShotCountingRemaining;
+
+    imgIdToSelect = imgIdToSelect < 0 ? 0 : imgIdToSelect;
+    imgIdToSelect = imgIdToSelect > 4 ? 4 : imgIdToSelect;
+
+    return document.getElementById("charge-panel-" + imgIdToSelect);
   }
 
 }

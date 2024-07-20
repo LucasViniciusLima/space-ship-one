@@ -5,6 +5,7 @@ import { Player } from "./models/player.model.js";
 import { Shot } from "./models/shot.model.js";
 
 let player = new Player();
+player.active = false;
 let shots = [];
 let enemysShoots = [];
 let enemys = [new Enemy(200, 100)];
@@ -17,10 +18,10 @@ let nextEnemyGeneration = 100;
 const clock = setInterval(function () {
   clockCounter++;
   player.move();
+  handleEnemysGeneration();
   handlePlayerShoots();
   handleEnemysShoots();
   handleEnemysMovement();
-  handleEnemysGeneration();
 
   clearInactiveItems();
 }, 30);
@@ -30,6 +31,7 @@ function updateFrame() {
   cvMethod.createBackground(clockCounter);
   cvMethod.showPlayerLife(player);
   cvMethod.showPlayerScreenStatus(player);
+  cvMethod.showPlayerSpecialCharge(player);
 
   shots.forEach(shot => cvMethod.drawShots(shot));
   enemysShoots.forEach(shot => cvMethod.drawShots(shot));
@@ -101,6 +103,8 @@ function handlePlayerShoots() {
 }
 
 function handleEnemysGeneration() {
+  if (!player.active) return;
+
   nextEnemyGeneration--;
   if (nextEnemyGeneration <= 0) {
     let x = generateAleatoreNumber(1, 2) === 1 ? 20 : 880;
