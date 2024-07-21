@@ -8,6 +8,7 @@ export class Shot {
   y = 0;
   color = '#FF11FF';
   direction = -1;
+  xDirection = 0;
 
   constructor(x, y, direction) {
     this.x = x;
@@ -18,6 +19,7 @@ export class Shot {
 
   move() {
     this.y += this.velocityY * this.direction;
+    this.x += this.velocityY * this.xDirection;
     if (this.y <= 0) {
       this.active = false;
     }

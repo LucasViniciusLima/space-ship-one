@@ -15,6 +15,7 @@ export class Player {
   intangibilityToEnemys = 0;
   specialShotCountingRemaining = 4;
   hasSpecialShot = false;
+  specialShotsEndsIn = 0;
   deaths = 0;
 
   move() {
@@ -112,6 +113,7 @@ export class Player {
 
   clearSpecialShotCountingRemaining() {
     this.specialShotCountingRemaining = 4;
+    this.hasSpecialShot = false;
   }
 
   decreaseSpecialShotCountingRemaining() {

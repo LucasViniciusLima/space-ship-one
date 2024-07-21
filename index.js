@@ -20,6 +20,7 @@ const clock = setInterval(function () {
   player.move();
   handleEnemysGeneration();
   handlePlayerShoots();
+  handlePlayerSpecialShoots();
   handleEnemysShoots();
   handleEnemysMovement();
 
@@ -74,6 +75,9 @@ document.addEventListener("keyup", function (key) {
       case ' ':
         startShoting();
         break;
+      case 's':
+        startSpecialShooting();
+        break;
     }
     return;
   }
@@ -98,6 +102,16 @@ function handlePlayerShoots() {
           player.decreaseSpecialShotCountingRemaining();
         }
       });
+    }
+  }
+}
+
+function handlePlayerSpecialShoots() {
+  if (player.specialShotsEndsIn > clockCounter) {
+    if (clockCounter % 2 == 0) {
+      startShoting();
+      startShotingInDirectionX(-1);
+      startShotingInDirectionX(1);
     }
   }
 }
@@ -162,6 +176,24 @@ function startShoting() {
   }
 }
 
+function startShotingInDirectionX(xDirection) {
+  if (player.active) {
+    let newShot = new Shot(player.x - 5, player.y, -1);
+    newShot.xDirection = xDirection;
+    shots.push(newShot);
+  }
+}
+
+function startSpecialShooting() {
+  if (player.hasSpecialShot) {
+    player.specialShotsEndsIn = clockCounter + 400;
+
+    //deal with directions
+
+    player.clearSpecialShotCountingRemaining();
+  }
+}
+
 function enemyShooting(enemy) {
   if (enemy.isAbleToShoot(player.x, player.y)) {
     if (enemy.hasMinimunDistanceFromLastShot(enemy.x, enemy.y) && player.active) {
@@ -197,7 +229,7 @@ function isEnemyShootHitingPlayer(shot) {
 }
 
 function createExplosionEffect(x, y) {
-  const particle = new Effect(x - 15, y - 15, 50, 50);
+  let particle = new Effect(x - 15, y - 15, 50, 50);
   particle.id = "explosion-";
   particle.frames = 3;
   particles.push(particle);

@@ -26,9 +26,11 @@ This is a game about spaceship who are like snooker but with shoot
 [x] - enemy bug remove
 [x] - background movement infinty
 [x] - button click to start
+[x] - Soltar o poder
 
 ### TODO
-[ ] - screver a cada morte de inimigo s.k.y.l.a.z.e.r ao final soltar um poder
-
 [ ] - phases
 [ ] - add status on death scene [space killed time, shots given etc]
+
+### Dropped ideas
+- write name when inemy hited
