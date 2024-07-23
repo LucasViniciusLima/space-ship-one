@@ -1,6 +1,7 @@
 import { CanvasMethods } from "./canvas.methods.js";
 import { Effect } from "./models/effect.model.js";
 import { Enemy } from "./models/enemy.model.js";
+import { Phases } from "./models/phases.model.js";
 import { Player } from "./models/player.model.js";
 import { Shot } from "./models/shot.model.js";
 
@@ -14,6 +15,9 @@ let particles = [];
 let cvMethod;
 let clockCounter = 0;
 let nextEnemyGeneration = 100;
+
+let enemyDeathCount = 0;
+let phasesController = new Phases();
 
 const clock = setInterval(function () {
   clockCounter++;
@@ -30,8 +34,9 @@ const clock = setInterval(function () {
 function updateFrame() {
   cvMethod.clearRect();
   cvMethod.createBackground(clockCounter);
+  cvMethod.showPhase(player, phasesController.getPhaseNumber());
   cvMethod.showPlayerLife(player);
-  cvMethod.showPlayerScreenStatus(player);
+  cvMethod.showPlayerScreenStatus(player, enemyDeathCount, phasesController.getPhaseNumber());
   cvMethod.showPlayerSpecialCharge(player);
 
   shots.forEach(shot => cvMethod.drawShots(shot));
@@ -98,8 +103,10 @@ function handlePlayerShoots() {
       enemys.forEach(lenemy => {
         if (isShotHitingEnemy(shots[i], lenemy) && lenemy.active) {
           lenemy.active = false;
+          enemyDeathCount++;
           createExplosionEffect(shots[i].x, shots[i].y);
           player.decreaseSpecialShotCountingRemaining();
+          handlePhaseStatus();
         }
       });
     }
@@ -125,8 +132,10 @@ function handleEnemysGeneration() {
     let y = generateAleatoreNumber(20, 300);
     let newEnemy = new Enemy(x, y);
     newEnemy.yDirection = -1;
+    newEnemy.velocityX = phasesController.getVelocityX();
+    newEnemy.velocityY = phasesController.getVelocityY();
     enemys.push(newEnemy);
-    nextEnemyGeneration = 200;
+    nextEnemyGeneration = phasesController.getNextGenerationTime();
   }
 }
 
@@ -187,9 +196,6 @@ function startShotingInDirectionX(xDirection) {
 function startSpecialShooting() {
   if (player.hasSpecialShot) {
     player.specialShotsEndsIn = clockCounter + 400;
-
-    //deal with directions
-
     player.clearSpecialShotCountingRemaining();
   }
 }
@@ -264,15 +270,25 @@ document.getElementById("canvas").addEventListener("click", function mouseEvent(
 });
 
 function resetGameStatus() {
+  let playerDeaths = player.deaths;//fixme
+
   player = new Player();
+  player.deaths = playerDeaths;
+
   shots = [];
   enemysShoots = [];
   enemys = [new Enemy(200, 100)];
   particles = [];
   clockCounter = 0;
   nextEnemyGeneration = 100;
+  enemyDeathCount = 0;
+  phasesController = new Phases();
 }
 
 function generateAleatoreNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function handlePhaseStatus() {
+  phasesController.verifyPhase(enemyDeathCount);
 }

@@ -130,9 +130,9 @@ export class CanvasMethods {
     }
   }
 
-  showPlayerScreenStatus(player) {
+  showPlayerScreenStatus(player, enemyDeathCount, actualPhase) {
     if (!player.active && player.deaths > 0) {
-      this.showDeadScreen();
+      this.showDeadScreen(player, enemyDeathCount, actualPhase);
       return;
     }
     if (!player.active && player.deaths == 0) {
@@ -166,13 +166,18 @@ export class CanvasMethods {
     this.ctx.drawImage(particleImage, particle.x, particle.y, particle.width, particle.height);
   }
 
-  showDeadScreen() {
+  showDeadScreen(player, enemyDeathCount, actualPhase) {
     this.setColorInCtx("#ff33ff");
     this.ctx.font = "bold 40px Orbitron";
     this.ctx.fillText("YOU ARE DEAD!", 285, 300);
 
     this.ctx.font = "bold 20px Orbitron";
     this.ctx.fillText("Clique na tela para continuar", 305, 330);
+
+    this.ctx.fillText(`Mortes = ${player.deaths}`, 50, 420);
+    this.ctx.fillText(`Fase = ${actualPhase}`, 50, 460);
+    this.ctx.fillText(`Inimigos mortos = ${enemyDeathCount}`, 50, 500);
+
   }
 
   showInitialScreen() {
@@ -209,6 +214,13 @@ export class CanvasMethods {
     imgIdToSelect = imgIdToSelect > 4 ? 4 : imgIdToSelect;
 
     return document.getElementById("charge-panel-" + imgIdToSelect);
+  }
+
+  showPhase(player, numberOfPhase) {
+    if (!player.alive) return;
+    this.setColorInCtx("#ff33ff");
+    this.ctx.font = "bold 13px Orbitron";
+    this.ctx.fillText(`Fase ${numberOfPhase}`, 20, 40);
   }
 
 }

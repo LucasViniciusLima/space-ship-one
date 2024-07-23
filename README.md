@@ -27,10 +27,13 @@ This is a game about spaceship who are like snooker but with shoot
 [x] - background movement infinty
 [x] - button click to start
 [x] - Soltar o poder
+[x] - add status on death scene [space killed time, shots given etc]
+[x] - phases
+[x] - show actual phase to player
 
 ### TODO
-[ ] - phases
-[ ] - add status on death scene [space killed time, shots given etc]
+[ ] - add a boss
+
 
 ### Dropped ideas
 - write name when inemy hited
