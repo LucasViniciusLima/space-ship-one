@@ -23,8 +23,17 @@ export class Player {
 
     this.decreaseIntangibilityToEnemys();
 
-    this.x += this.velocityX * this.xDirection;
-    this.y += this.velocityY * this.yDirection;
+    let newXValue = this.x + (this.velocityX * this.xDirection);
+    let newYValue = this.y + (this.velocityY * this.yDirection);
+
+    if (newXValue <= 900 && newXValue > 0) {
+      this.x = newXValue;
+    }
+
+    if (newYValue <= 600 && newYValue > 0) {
+      this.y = newYValue;
+    }
+
   }
 
   directionUp() {

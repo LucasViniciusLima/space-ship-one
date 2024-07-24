@@ -31,7 +31,6 @@ export class Phases {
     this.velocityXOfEnemys += 0.5;
     this.velocityYOfEnemys += 0.5;
     this.generationTime -= 30;
-    console.log("phase: ", this.actualPhase, "values: vel x:", this.velocityXOfEnemys, "vel y: ", this.velocityYOfEnemys);
   }
 
   getNextGenerationTime() {

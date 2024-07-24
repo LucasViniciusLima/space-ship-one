@@ -5,6 +5,8 @@ import { Phases } from "./models/phases.model.js";
 import { Player } from "./models/player.model.js";
 import { Shot } from "./models/shot.model.js";
 
+let developMode = false;
+
 let player = new Player();
 player.active = false;
 let shots = [];
@@ -71,8 +73,15 @@ function updateFrame() {
 window.addEventListener("load", function () {
   const canvashtmlDom = document.getElementById("canvas");
   cvMethod = new CanvasMethods(canvashtmlDom.getContext('2d'));
+  enableDevelopMode();
   window.requestAnimationFrame(updateFrame);
 });
+
+function enableDevelopMode() {
+  if (developMode) {
+    document.getElementById("develop-buttons").style.display = "block";
+  }
+}
 
 document.addEventListener("keyup", function (key) {
   if (!player.isMotionKey(key)) {

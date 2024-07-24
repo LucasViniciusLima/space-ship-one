@@ -30,8 +30,10 @@ This is a game about spaceship who are like snooker but with shoot
 [x] - add status on death scene [space killed time, shots given etc]
 [x] - phases
 [x] - show actual phase to player
+[x] - player donst pass the border
 
 ### TODO
+[ ] - think about phases design
 [ ] - add a boss
 
 
