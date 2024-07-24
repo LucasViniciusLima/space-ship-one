@@ -9,6 +9,7 @@ export class Shot {
   color = '#FF11FF';
   direction = -1;
   xDirection = 0;
+  specialShot = false;
 
   constructor(x, y, direction) {
     this.x = x;

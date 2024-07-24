@@ -77,14 +77,12 @@ export class CanvasMethods {
 
   drawShots(shot) {
     if (shot.active) {
-      //this.setColorInCtx(shot.color);
-      //this.drawRectangle(shot);
       this.drawShotImage(shot);
     }
   }
 
   drawShotImage(shot) {
-    const shootImage = this.getShotImageAleatore();
+    const shootImage = this.getShotImageAleatore(shot);
     this.ctx.drawImage(shootImage, shot.x, shot.y, shot.width, shot.height);
   }
 
@@ -93,9 +91,10 @@ export class CanvasMethods {
     return document.getElementById("spaceship-" + num);
   }
 
-  getShotImageAleatore() {
+  getShotImageAleatore(shot) {
+    let documentPrefix = shot.specialShot ? "special-shoot-" : "shoot-";
     let num = this.generateAleatoreNumber(1, 3);
-    return document.getElementById("shoot-" + num);
+    return document.getElementById(documentPrefix + num);
   }
 
   getHorizontalPowerImageAleatore() {
@@ -217,7 +216,7 @@ export class CanvasMethods {
   }
 
   showPhase(player, numberOfPhase) {
-    if (!player.alive) return;
+    if (!player.active) return;
     this.setColorInCtx("#ff33ff");
     this.ctx.font = "bold 13px Orbitron";
     this.ctx.fillText(`Fase ${numberOfPhase}`, 20, 40);

@@ -115,7 +115,7 @@ function handlePlayerShoots() {
 
 function handlePlayerSpecialShoots() {
   if (player.specialShotsEndsIn > clockCounter) {
-    if (clockCounter % 2 == 0) {
+    if (clockCounter % 10 == 0) {
       startShoting();
       startShotingInDirectionX(-1);
       startShotingInDirectionX(1);
@@ -181,6 +181,7 @@ function handleEnemysMovement() {
 function startShoting() {
   if (player.active) {
     let newShot = new Shot(player.x - 5, player.y, -1);
+    handleSpecialShotGeneration(newShot);
     shots.push(newShot);
   }
 }
@@ -189,8 +190,16 @@ function startShotingInDirectionX(xDirection) {
   if (player.active) {
     let newShot = new Shot(player.x - 5, player.y, -1);
     newShot.xDirection = xDirection;
+    handleSpecialShotGeneration(newShot);
     shots.push(newShot);
   }
+}
+
+function handleSpecialShotGeneration(shot) {
+  if (player.specialShotsEndsIn <= clockCounter) return;
+  shot.specialShot = true;
+  shot.width = 30;
+  shot.height = 35;
 }
 
 function startSpecialShooting() {
