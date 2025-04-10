@@ -13,8 +13,18 @@
   <style>
     body {
       background-color: #030303;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+    }
+
+    .section-block {
+      padding-top: 40px;
+      padding-bottom: 40px;
+      width: 100%;
       display: flex;
       justify-content: center;
+      align-items: center;
     }
 
     .container {
@@ -58,15 +68,85 @@
     .test-button:hover {
       background-color: #a71ba7;
     }
+
+    .profile-container {
+      display: flex;
+      background-color: #1e1e1e;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      transition: transform 0.3s ease;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .profile-image {
+      flex: 1;
+      background-color: #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .profile-image img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #4caf50;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-image img:hover {
+      transform: rotate(5deg) scale(1.05);
+    }
+
+    .profile-info {
+      flex: 2;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .profile-info h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      color: #ffffff;
+    }
+
+    .profile-info h2 {
+      font-size: 1.2rem;
+      color: #aaaaaa;
+      margin: 8px 0 20px;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 16px;
+    }
+
+    .social-icons a {
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      transform: scale(1.2);
+    }
+
+    .social-icon-svg {
+      width: 50px;
+    }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <!--h1 class="title">SKYLAZER SPACE SHIP</h1-->
-    <canvas class="mainCanvas" id="canvas" width="900" height="600"></canvas>
-    <div class="div-buttons" id="develop-buttons" style="display: none;">
-      <button class="test-button" id="btn-add-enemy">Add Enemy</button>
+  <div class="section-block">
+    <div class="container">
+      <canvas class="mainCanvas" id="canvas" width="900" height="600"></canvas>
+      <div class="div-buttons" id="develop-buttons" style="display: none;">
+        <button class="test-button" id="btn-add-enemy">Add Enemy</button>
+      </div>
     </div>
   </div>
   <img class="img-resources" src="./resources/heartgame.png" id="heart">
@@ -93,6 +173,27 @@
   <img class="img-resources" src="./resources/charge-panel-particles-2.png" id="charge-panel-particles-2">
   <img class="img-resources" src="./resources/charge-panel-particles-3.png" id="charge-panel-particles-3">
   <img class="img-resources" src="./resources/charge-panel-particles-4.png" id="charge-panel-particles-4">
+  <div class="section-block">
+    <div class="container">
+      <div class="profile-container">
+        <div class="profile-image">
+          <img src="https://avatars.githubusercontent.com/u/49298395?v=4" alt="Foto de perfil GitHub">
+        </div>
+        <div class="profile-info">
+          <h1>Lucas Vinícius de Lima Bezerra</h1>
+          <h2>Java Developer | Spring | Angular</h2>
+          <div class="social-icons">
+            <a href="https://github.com/LucasViniciusLima" target="_blank">
+              <img class="social-icon-svg" src="./resources/social-icons/icons8-github.svg" />
+            </a>
+            <a href="https://www.linkedin.com/in/lucas-bezerra-a06656186/" target="_blank">
+              <img class="social-icon-svg" src="./resources/social-icons/icons8-linkedin.svg" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
